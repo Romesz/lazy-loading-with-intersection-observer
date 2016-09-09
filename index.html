@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <style>
+      #pics img {
+        display: block;
+        margin: 0 auto;
+        padding: 10px;
+      }
+    </style>
+    <div id="pics"><img src="http://place-hoff.com/600/800"></div>
+    <div id="sentinel"></div>
+
+    <script>
+      if (!('IntersectionObserver' in window)) {
+        console.log('IntersectionObserver not supported but there is polifill added to the page :)');
+        let polifill = document.createElement('script');
+        polifill.src = 'https://rawgit.com/jeremenichelli/intersection-observer-polyfill/master/intersection-observer-polyfill.js';
+        document.head.appendChild(polifill);
+        polifill.onload = () => {
+          // create the observer after the polifill script is loaded
+          createObserver();
+        };
+      } else {
+        createObserver();
+      }
+
+      function createObserver () {
+        const sentinel = document.querySelector('#sentinel');
+        const observer = new IntersectionObserver(changes => {
+          let pics = document.querySelector('#pics');
+          let newImg = document.createElement('img');
+          newImg.src = 'http://place-hoff.com/600/800?' + Date.now();
+          pics.appendChild(newImg);
+        }, {});
+        observer.observe(sentinel);
+      }
+    </script>
+
+  </body>
+</html>
